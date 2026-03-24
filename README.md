@@ -1,42 +1,34 @@
-# CSV Insight MVP
+# CSV Insight Pro v2
 
-A tiny Streamlit app that lets a user upload a CSV or Excel file and immediately get:
-- a preview
-- basic summary metrics
-- generated plain-English insights
-- a histogram for one numeric column
-- a downloadable PDF report
+A browser-friendly Streamlit app that turns uploaded datasets into premium-style analytics.
 
-## Run locally
+## What this version adds
+- CSV, Excel, and Parquet support
+- Automatic column role inference
+- Datetime detection
+- Correlation scan
+- Outlier scan
+- Segment analysis by category
+- Time-series analysis when a date column exists
+- PDF report export
+- CSV schema export
+- Sampling mode for larger files
+- Stripe-link placeholder for a paid download workflow
 
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
+## Deploy online quickly
+1. Create a GitHub repo.
+2. Upload `app.py`, `requirements.txt`, and `README.md`.
+3. Open the repo in GitHub Codespaces if you want to edit in-browser.
+4. Deploy it through Streamlit Community Cloud.
 
-## Fast deployment options
+## Positioning
+You are not selling “charts.”
+You are selling: “Upload a messy dataset and get an executive summary, anomaly scan, segmentation view, and downloadable premium report.”
 
-### Streamlit Community Cloud
-1. Push these files to a GitHub repo.
-2. Go to Streamlit Community Cloud.
-3. Create a new app and point it to `app.py`.
-4. Add the same `requirements.txt`.
-
-### Render
-1. Create a new Web Service.
-2. Connect the repo.
-3. Build command:
-   `pip install -r requirements.txt`
-4. Start command:
-   `streamlit run app.py --server.port=$PORT --server.address=0.0.0.0`
-
-## Fast monetization path
-- Keep upload + preview free.
-- Put the PDF report behind a Stripe payment link.
-- Once people use it, upgrade to Stripe Checkout and a small backend.
-
-## First places to post it
-- r/excel
-- r/datasets
-- r/dataisbeautiful (only if you show nice output)
-- X / LinkedIn with a short demo gif
+## Next features worth adding
+- Actual Stripe-gated downloads
+- LLM-written narrative insights
+- Smarter chart recommendations
+- Forecasting / clustering tabs
+- Multiple uploaded files with comparison mode
+- Branded report themes
