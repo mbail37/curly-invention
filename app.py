@@ -891,26 +891,26 @@ with tab2:
                 
                         st.pyplot(fig)
                         
-                if not result["numeric_drift"].empty:
-                    st.markdown("### Percent Change Heatmap")
+                # if not result["numeric_drift"].empty:
+                #     st.markdown("### Percent Change Heatmap")
                 
-                    heat = result["numeric_drift"][["left_column", "mean_pct_change"]].copy()
-                    heat = heat.dropna()
-                    heat = heat.sort_values("mean_pct_change", ascending=False).head(15)
+                #     heat = result["numeric_drift"][["left_column", "mean_pct_change"]].copy()
+                #     heat = heat.dropna()
+                #     heat = heat.sort_values("mean_pct_change", ascending=False).head(15)
                 
-                    if not heat.empty:
-                        fig, ax = plt.subplots(figsize=(8, 4))
+                #     if not heat.empty:
+                #         fig, ax = plt.subplots(figsize=(8, 4))
                 
-                        values = heat["mean_pct_change"].values.reshape(-1, 1)
-                        im = ax.imshow(values, aspect='auto')
+                #         values = heat["mean_pct_change"].values.reshape(-1, 1)
+                #         im = ax.imshow(values, aspect='auto')
                 
-                        ax.set_yticks(range(len(heat)))
-                        ax.set_yticklabels(heat["left_column"])
-                        ax.set_xticks([])
+                #         ax.set_yticks(range(len(heat)))
+                #         ax.set_yticklabels(heat["left_column"])
+                #         ax.set_xticks([])
                 
-                        ax.set_title("Relative Change (A → B)")
+                #         ax.set_title("Relative Change (A → B)")
                 
-                        st.pyplot(fig)
+                #         st.pyplot(fig)
 
                 st.markdown("### Distribution Comparison")
                 
