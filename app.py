@@ -870,6 +870,75 @@ with tab2:
                 else:
                     st.write("No matched numeric columns were available for drift comparison.")
 
+                raw_drift = result["numeric_drift"].copy()
+                
+                if not raw_drift.empty:
+                    raw_drift = raw_drift.dropna(subset=["left_mean", "right_mean"])
+                
+                    raw_drift["abs_change"] = raw_drift["mean_pct_change"].abs()
+                    top = raw_drift.sort_values("abs_change", ascending=False).head(8)
+                
+                    if not top.empty:
+                        fig, ax = plt.subplots()
+                        x = np.arange(len(top))
+                
+                        ax.bar(x - 0.2, top["left_mean"], 0.4, label="File A")
+                        ax.bar(x + 0.2, top["right_mean"], 0.4, label="File B")
+                
+                        ax.set_xticks(x)
+                        ax.set_xticklabels(top["left_column"], rotation=45)
+                        ax.legend()
+                
+                        st.pyplot(fig)
+                        
+                if not result["numeric_drift"].empty:
+                    st.markdown("### Percent Change Heatmap")
+                
+                    heat = result["numeric_drift"][["left_column", "mean_pct_change"]].copy()
+                    heat = heat.dropna()
+                    heat = heat.sort_values("mean_pct_change", ascending=False).head(15)
+                
+                    if not heat.empty:
+                        fig, ax = plt.subplots(figsize=(8, 4))
+                
+                        values = heat["mean_pct_change"].values.reshape(-1, 1)
+                        im = ax.imshow(values, aspect='auto')
+                
+                        ax.set_yticks(range(len(heat)))
+                        ax.set_yticklabels(heat["left_column"])
+                        ax.set_xticks([])
+                
+                        ax.set_title("Relative Change (A → B)")
+                
+                        st.pyplot(fig)
+
+                st.markdown("### Distribution Comparison")
+                
+                common_numeric = [
+                    row["left_column"]
+                    for _, row in result["numeric_drift"].iterrows()
+                    if pd.notna(row["left_mean"])
+                ]
+                
+                if common_numeric:
+                    col = st.selectbox("Select column to compare", common_numeric)
+                
+                    left_series = pd.to_numeric(left_df[col], errors="coerce").dropna()
+                
+                    # find mapped right column
+                    match_row = result["numeric_drift"][result["numeric_drift"]["left_column"] == col]
+                    if not match_row.empty:
+                        right_col = match_row.iloc[0]["right_column"]
+                        right_series = pd.to_numeric(right_df[right_col], errors="coerce").dropna()
+                
+                        fig, ax = plt.subplots(figsize=(8, 4))
+                        ax.hist(left_series, bins=30, alpha=0.5, label="File A")
+                        ax.hist(right_series, bins=30, alpha=0.5, label="File B")
+                        ax.legend()
+                        ax.set_title(f"Distribution Comparison: {col}")
+                
+                        st.pyplot(fig)
+
             except Exception as e:
                 st.error(str(e))
         else:
